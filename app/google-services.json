@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "273188632970",
+    "firebase_url": "https://backstage-8adda.firebaseio.com",
+    "project_id": "backstage-8adda",
+    "storage_bucket": "backstage-8adda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273188632970:android:df68666fd0cd8d8c",
+        "android_client_info": {
+          "package_name": "com.adhi.backstage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273188632970-2fvvo8otm8ot4km3so3q3jbovr8s4k3e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adhi.backstage",
+            "certificate_hash": "DF844C6146AC9E5ACBF90A7DBD8E127192FBCBFF"
+          }
+        },
+        {
+          "client_id": "273188632970-o16v7ghgcrv6q5hnll720ptf9ao9u7dn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCr7af4XOasR6TaPIRcFp7O9xHw34v_D-U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273188632970-o16v7ghgcrv6q5hnll720ptf9ao9u7dn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

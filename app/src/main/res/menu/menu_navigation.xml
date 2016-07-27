@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/menu_group_1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/home"
+            android:title="News &amp; Discussions" />
+        <item
+            android:id="@+id/allot"
+            android:title="Allotments" />
+        <item
+            android:id="@+id/members"
+            android:title="Members" />
+        <item
+            android:id="@+id/inventory"
+            android:title="Inventory" />
+        <item
+            android:id="@+id/about"
+            android:title="About" />
+    </group>
+    <group
+        android:id="@+id/menu_group_2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/profile"
+            android:title="Profile" />
+        <item
+            android:id="@+id/sign_out"
+            android:title="Sign Out" />
+    </group>
+</menu>
