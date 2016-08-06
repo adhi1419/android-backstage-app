@@ -2,7 +2,7 @@ package com.adhi.backstage.com.adhi.backstage.cardlist;
 
 public class User {
 
-    private String id, name, avatar, role, phone;
+    public String id, name, avatar, role, phone;
 
     public User() {
 

@@ -207,10 +207,8 @@ class InventoryItemComparator implements Comparator<InventoryItem> {
         if (sort == 1) {
             return a.event.compareToIgnoreCase(b.event);
         } else if (sort == 2) {
-            if (a.status == "0") {
-                return -1;
-            } else if (b.status == "0") {
-                return 1;
+            if (a.status.equals("0") || b.status.equals("0")) {
+                return a.status.compareToIgnoreCase(b.status);
             } else {
                 return -a.status.compareToIgnoreCase(b.status);
             }

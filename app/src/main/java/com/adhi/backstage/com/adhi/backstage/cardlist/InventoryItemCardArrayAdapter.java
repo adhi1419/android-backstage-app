@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class InventoryItemCardArrayAdapter extends RecyclerView.Adapter<InventoryItemCardArrayAdapter.MyViewHolder> {
-    private static final String TAG = "InventoryItemCardArrayAdapter";
     private List<InventoryItem> cardList = new ArrayList<>();
     private DatabaseReference mDatabase;
 
@@ -63,7 +62,9 @@ public class InventoryItemCardArrayAdapter extends RecyclerView.Adapter<Inventor
     @Override
     public void onBindViewHolder(final InventoryItemCardArrayAdapter.MyViewHolder holder, int position) {
         final InventoryItem card = cardList.get(position);
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
         holder.line1.setText(card.item);
         holder.line3.setText("Issued On: " + card.time);
         holder.line4.setText("Event: " + card.event);
@@ -79,13 +80,11 @@ public class InventoryItemCardArrayAdapter extends RecyclerView.Adapter<Inventor
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-        if (card.status != "0") {
+        if (!card.status.equals("0")) {
             holder.btn1.setVisibility(View.GONE);
             holder.line1.setTextColor(Color.GREEN);
             holder.line5.setText("Returned On: " + card.status);
-        }
-
-        if (card.status == "0") {
+        } else {
             if (!FirebaseAuth.getInstance().getCurrentUser().getEmail().split("\\@")[0].equals(card.id))
                 holder.btn1.setVisibility(View.GONE);
             holder.line1.setTextColor(Color.RED);
@@ -97,11 +96,11 @@ public class InventoryItemCardArrayAdapter extends RecyclerView.Adapter<Inventor
             public void onClick(View v) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 sdf.setTimeZone(TimeZone.getDefault());
-                String currentDateandTime = sdf.format(new Date());
+                String currentDateAndTime = sdf.format(new Date());
 
                 DatabaseReference miDatabase = mDatabase.child("Inventory");
                 InventoryItem iItem = new InventoryItem(card.id, card.item, card.event, card.time,
-                        currentDateandTime);
+                        currentDateAndTime);
                 Map<String, Object> postValues = iItem.toMap();
 
                 Map<String, Object> childUpdates = new HashMap<>();

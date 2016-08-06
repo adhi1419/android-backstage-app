@@ -1,9 +1,12 @@
 package com.adhi.backstage;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -20,6 +23,7 @@ import com.adhi.backstage.com.adhi.backstage.fragments.Allotments;
 import com.adhi.backstage.com.adhi.backstage.fragments.HomeFragment;
 import com.adhi.backstage.com.adhi.backstage.fragments.Inventory;
 import com.adhi.backstage.com.adhi.backstage.fragments.Members;
+import com.adhi.backstage.com.adhi.backstage.fragments.Profile;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -32,6 +36,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
@@ -39,25 +45,27 @@ public class MainActivity extends AppCompatActivity {
     private GoogleApiClient client;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
+    private CoordinatorLayout cLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        cLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         setSupportActionBar(toolbar);
-        initNavigationDrawer();
         Intent i = getIntent();
-        displayFragment(i.getIntExtra("callFrom", R.id.home));
-
+        initNavigationDrawer();
+        displayFragment(i.getIntExtra("fragment", R.id.home));
+        showSnackBar();
         auth = FirebaseAuth.getInstance();
-        final FirebaseUser fuUser = FirebaseAuth.getInstance().getCurrentUser();
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void initNavigationDrawer() {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         final FirebaseUser fuUser = FirebaseAuth.getInstance().getCurrentUser();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -124,6 +132,10 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new About();
                 title = getString(R.string.title_about);
                 break;
+            case R.id.profile:
+                fragment = new Profile();
+                title = getString(R.string.title_profile);
+                break;
             case R.id.sign_out:
                 auth.signOut();
                 Intent intent = new Intent(MainActivity.this, LoginScreen.class);
@@ -141,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
             getSupportActionBar().setTitle(title);
         }
+
         drawerLayout.closeDrawers();
     }
 
@@ -168,5 +181,44 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
+    }
+
+    public boolean isOnline() {
+
+        Runtime runtime = Runtime.getRuntime();
+        try {
+
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public void showSnackBar() {
+        Snackbar snackbar = Snackbar.make(cLayout, "No internet connection!", Snackbar.LENGTH_LONG);
+        if (!isOnline()) {
+            snackbar.setAction("RETRY", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showSnackBar();
+                }
+            });
+
+            snackbar.setActionTextColor(Color.RED);
+
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+            snackbar.show();
+        } else {
+            snackbar.dismiss();
+        }
     }
 }

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MemberCardArrayAdapter extends RecyclerView.Adapter<MemberCardArrayAdapter.MyViewHolder> {
-    private static final String TAG = "MemberCardArrayAdapter";
     private List<User> cardList = new ArrayList<>();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -62,6 +61,27 @@ public class MemberCardArrayAdapter extends RecyclerView.Adapter<MemberCardArray
                 break;
             case "3":
                 avatarResId = R.drawable.avatar_3;
+                break;
+            case "4":
+                avatarResId = R.drawable.avatar_4;
+                break;
+            case "5":
+                avatarResId = R.drawable.avatar_5;
+                break;
+            case "6":
+                avatarResId = R.drawable.avatar_6;
+                break;
+            case "7":
+                avatarResId = R.drawable.avatar_7;
+                break;
+            case "8":
+                avatarResId = R.drawable.avatar_8;
+                break;
+            case "9":
+                avatarResId = R.drawable.avatar_9;
+                break;
+            case "10":
+                avatarResId = R.drawable.avatar_10;
                 break;
         }
         holder.avatar.setImageResource(avatarResId);
