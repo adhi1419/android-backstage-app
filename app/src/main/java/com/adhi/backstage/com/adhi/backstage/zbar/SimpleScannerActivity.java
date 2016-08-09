@@ -30,7 +30,6 @@ public class SimpleScannerActivity extends BaseScannerActivity implements ZBarSc
     private ZBarScannerView mScannerView;
     private DatabaseReference mDatabase;
     private FirebaseAuth auth;
-    private EditText etEvent;
     private String sEvent = null;
 
     @Override
@@ -42,10 +41,9 @@ public class SimpleScannerActivity extends BaseScannerActivity implements ZBarSc
         mScannerView = new ZBarScannerView(this);
         contentFrame.addView(mScannerView);
 
-        etEvent = (EditText) findViewById(R.id.zbar_event_name);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Inventory");
         auth = FirebaseAuth.getInstance();
-
+        sEvent = getIntent().getStringExtra("event_key");
     }
 
     @Override
@@ -68,7 +66,7 @@ public class SimpleScannerActivity extends BaseScannerActivity implements ZBarSc
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         sdf.setTimeZone(TimeZone.getDefault());
         String currentDateAndTime = sdf.format(new Date());
-        sEvent = etEvent.getText().toString();
+
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SimpleScannerActivity.this);
 
@@ -103,25 +101,7 @@ public class SimpleScannerActivity extends BaseScannerActivity implements ZBarSc
                             startActivity(intent);
                         }
                     });
-        } else {
-            alertDialogBuilder.setTitle("Event Name");
-            alertDialogBuilder
-                    .setMessage("Please Enter a valid Event Name")
-                    .setCancelable(false)
-                    .setNegativeButton("Okay", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mScannerView.resumeCameraPreview(SimpleScannerActivity.this);
-                                }
-                            }, 2000);
-                            dialog.cancel();
-                        }
-                    });
         }
-
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }

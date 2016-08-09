@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.adhi.backstage.com.adhi.backstage.fragments.About;
-import com.adhi.backstage.com.adhi.backstage.fragments.Allotments;
+import com.adhi.backstage.com.adhi.backstage.fragments.Events;
 import com.adhi.backstage.com.adhi.backstage.fragments.HomeFragment;
 import com.adhi.backstage.com.adhi.backstage.fragments.Inventory;
 import com.adhi.backstage.com.adhi.backstage.fragments.Members;
@@ -52,14 +52,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         cLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         setSupportActionBar(toolbar);
-        Intent i = getIntent();
+        if (getIntent().getIntExtra("fragment", R.id.home) == R.id.home)
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         initNavigationDrawer();
-        displayFragment(i.getIntExtra("fragment", R.id.home));
-        showSnackBar();
+        displayFragment(getIntent().getIntExtra("fragment", R.id.home));
+        //showSnackBar();
         auth = FirebaseAuth.getInstance();
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
@@ -116,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new HomeFragment();
                 title = getString(R.string.title_home);
                 break;
-            case R.id.allot:
-                fragment = new Allotments();
-                title = getString(R.string.title_allot);
+            case R.id.events:
+                fragment = new Events();
+                title = getString(R.string.title_events);
                 break;
             case R.id.members:
                 fragment = new Members();

@@ -67,29 +67,33 @@ public class InventoryItemCardArrayAdapter extends RecyclerView.Adapter<Inventor
 
         holder.line1.setText(card.item);
         holder.line3.setText("Issued On: " + card.time);
-        holder.line4.setText("Event: " + card.event);
         mDatabase.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         holder.line2.setText("Issued To: " + dataSnapshot.child("Users").child(card.id)
                                 .child("name").getValue().toString());
+                        holder.line4.setText("Event: " + dataSnapshot.child("Event").child(card.event)
+                                .child("name").getValue().toString() + ", " + dataSnapshot.child("Event").child(card.event)
+                                .child("place").getValue().toString());
+                        if (!card.status.equals("0")) {
+                            holder.btn1.setVisibility(View.GONE);
+                            holder.line1.setTextColor(Color.GREEN);
+                            holder.line5.setText("Returned On: " + card.status);
+                        } else {
+                            if (!FirebaseAuth.getInstance().getCurrentUser().getEmail().split("\\@")[0].equals(card.id))
+                                holder.btn1.setVisibility(View.GONE);
+                            holder.line1.setTextColor(Color.RED);
+                            holder.line5.setText("Status: Not Returned\nExpected: " + dataSnapshot.child("Event").child(card.event)
+                                    .child("end").getValue().toString());
+                        }
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
-        if (!card.status.equals("0")) {
-            holder.btn1.setVisibility(View.GONE);
-            holder.line1.setTextColor(Color.GREEN);
-            holder.line5.setText("Returned On: " + card.status);
-        } else {
-            if (!FirebaseAuth.getInstance().getCurrentUser().getEmail().split("\\@")[0].equals(card.id))
-                holder.btn1.setVisibility(View.GONE);
-            holder.line1.setTextColor(Color.RED);
-            holder.line5.setText("Status: Not Returned");
-        }
+
 
         holder.btn1.setOnClickListener(new View.OnClickListener() {
             @Override

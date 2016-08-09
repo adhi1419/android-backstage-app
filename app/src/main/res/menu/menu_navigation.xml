@@ -5,26 +5,26 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/home"
-            android:title="News &amp; Discussions" />
+            android:title="@string/title_home" />
         <item
-            android:id="@+id/allot"
-            android:title="Allotments" />
+            android:id="@+id/events"
+            android:title="@string/title_events" />
         <item
             android:id="@+id/members"
-            android:title="Members" />
+            android:title="@string/title_members" />
         <item
             android:id="@+id/inventory"
-            android:title="Inventory" />
+            android:title="@string/title_inventory" />
         <item
             android:id="@+id/about"
-            android:title="About" />
+            android:title="@string/title_about" />
     </group>
     <group
         android:id="@+id/menu_group_2"
         android:checkableBehavior="single">
         <item
             android:id="@+id/profile"
-            android:title="Profile" />
+            android:title="@string/title_profile" />
         <item
             android:id="@+id/sign_out"
             android:title="Sign Out" />
