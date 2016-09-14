@@ -1,0 +1,540 @@
+/* General Reset */
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, hr, button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: none;
+}
+
+@font-face {
+    font-family: myFont;
+    src: url(../ufonts.com_tw-cen-mt.ttf);
+}
+
+ol, ul {
+    list-style-type: none;
+}
+
+h1, h2, h3, h4, h5, h6, li {
+    line-height: 100%;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+q:before, q:after {
+    content: "";
+}
+
+input, textarea, select {
+    font: 16px myFont, Arial, Helvetica, sans-serif;
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+}
+
+textarea {
+    overflow: auto;
+    resize: none;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    font-size: 20px;
+    line-height: 21px;
+    color: #ffffff;
+    font-family: myFont, Arial, Helvetica, sans-serif;
+    background-color: #6D1A16;
+}
+
+#imageDiv {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.25;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+h1 {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+h3 {
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+
+h4 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+h5 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+h6 {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+
+/*  links
+	******************************/
+
+a {
+    color: #81c266;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #81c266;
+    text-decoration: none;
+}
+
+
+/*  superscript and subscript
+	******************************/
+
+sup, sub {
+    vertical-align: baseline;
+    position: relative;
+    top: -0.4em;
+}
+
+sub {
+    top: 0.4em;
+}
+
+
+/*  lists
+	******************************/
+
+ul, ol {
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    list-style-type: disc;
+}
+
+ol li {
+    list-style-type: decimal;
+}
+
+ul li, ol li {
+    font-size: 16px;
+    line-height: 14px;
+    margin: 0 0 10px 15px;
+}
+
+
+/*  tables
+	******************************/
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 20px;
+    border: 0px;
+    width: 100%;
+    padding: 10px;
+}
+
+table thead th {
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+    padding: 2%;
+    border-style: hidden hidden solid hidden;
+}
+
+table th {
+    padding: 3px;
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(200, 200, 200);
+    border: 1px solid;
+}
+
+table tr {
+    margin: 0 0 5px 0;
+    padding: 3px;
+}
+
+table td {
+    padding: 5px;
+    margin: 0px 1px;
+    text-align: center;
+    border-collapse: collapse;
+    vertical-align: middle;
+    width: auto;
+    height: 30px;
+    border: 1px solid;
+}
+
+
+/*  horizontal lines
+	******************************/
+
+hr {
+    border-bottom: 2px solid #FFFFFF;
+    margin: 4% 0% 1% 0%;
+    padding: 0;
+    height: 2px;
+    width: 100%;
+}
+
+.clear {
+    clear: both;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+#wrapper {
+    margin: 5% 5%;
+    padding: 2%;
+    position: relative;
+    min-height: 90%;
+    background: rgba(62, 0, 0, 0.6);
+    background-attachment: fixed;
+}
+
+#container {
+    width: 90%;
+    height: 90%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/*----start header----*/
+
+#header {
+    padding: 0px 0px 20px;
+}
+
+#header .top_banner {
+    height: 20%;
+    margin: 1% 0%;
+    width: 80%;
+    text-align: left;
+    display: inline-block;
+}
+
+#header .top_banner h1 {
+    font-size: 45px;
+    color: #ffffff;
+    margin: 0px;
+    padding: 0px 0px 5px;
+}
+
+#header #logoDiv {
+    position: absolute;
+    right: 2%;
+    top: 3%;
+    width: 7%;
+}
+
+#tabsBar {
+    clear: both;
+    margin-bottom: 5px;
+    padding: 0px;
+}
+
+#tabsBar ul {
+    margin: 0px;
+    padding: 0px;
+}
+
+#tabsBar ul li {
+    margin: 5px 0px;
+    display: inline;
+    font-size: 22px;
+    list-style-type: none;
+    text-decoration: none;
+    text-align: center;
+}
+
+#tabsBar .leftTab {
+    float: left;
+    padding-right: 25px;
+}
+
+#tabsBar .rightTab {
+    float: right;
+    padding-left: 25px;
+}
+
+
+/*----end header----*/
+
+
+/*----start page content----*/
+
+#homeDiv {
+    padding: 0px 0px 20px;
+}
+
+#homeDiv .right_section {
+    width: 650px;
+    float: right;
+}
+
+#homeDiv .right_section .top_content {
+    padding: 15px 0 0px 0;
+}
+
+#homeDiv .right_section .top_content .column_one {
+    width: 300px;
+    float: left;
+    margin-bottom: 20px;
+}
+
+#homeDiv .right_section .top_content .column_two {
+    width: 300px;
+    float: right;
+    margin-bottom: 20px;
+}
+
+a.btn {
+    color: #0a0800;
+    font-size: 12px;
+    text-decoration: none;
+    padding: 6px 13px 6px 13px;
+    font-weight: bold;
+    display: inline-block;
+    border: #566568 solid 1px;
+    background-color: #97aaae;
+}
+
+a.btn:hover {
+    text-decoration: none;
+}
+
+.common_content {
+    padding: 0 0 20px 0;
+}
+
+.border_left {
+    border-left: #6e7678 dotted 1px;
+    padding-left: 20px;
+}
+
+.border_none {
+    border: none!important;
+    margin: 0px!important;
+}
+
+#homeProfile {
+    width: 210px;
+    float: left;
+    padding: 2% 2%;
+}
+
+#homeProfile #homeBlockHeading {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+
+/*----end page content----*/
+
+
+/*----start footer content----*/
+
+#footer {
+    clear: both;
+    margin-top: 18px;
+    padding: 15px 0 0px 0;
+    height: 25px;
+    text-align: center;
+    font-family: myFont, Verdana, Geneva, sans-serif;
+    font-size: 12px;
+    line-height: 19px;
+    border-top: #525b60 solid 1px;
+}
+
+#footer a {
+    color: #81c266;
+    text-decoration: none;
+}
+
+#footer a:hover {
+    color: #81c266;
+    text-decoration: underline;
+}
+
+
+/*changes by me*/
+
+.buttonA {
+    color: #FFFFFF;
+    font-family: myFont;
+}
+
+.buttonA:hover, .buttonA:focus, .buttonA:active{
+      cursor: pointer;
+      color: rgb(200, 200, 200);
+}
+
+.buttonB {
+    height: auto;
+    width: auto;
+    background-color: #FFF;
+    color: rgb(62, 0, 0);
+    border: 1px solid white;
+    padding: 5px;
+    margin: 10px;
+    font-family: myFont;
+    border-radius: 10%;
+}
+
+.buttonC {
+    border: 1px solid #ffffff;
+    border-radius: 10%;
+    margin-top: 10px;
+    text-align: center;
+    padding: 5px;
+    color: #FFFFFF;
+    font-family: myFont;
+}
+
+button:hover, button:active, button:focus {
+    cursor: pointer;
+    color: rgb(200, 200, 200);
+}
+
+.eventInput {
+    margin-left: 5px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: rgba(62, 0, 0, 0.9);
+    margin: 20% auto;
+    padding: 2% 2% 1%;
+    width: 30%;
+    line-height: 35px;
+    position: relative;
+}
+
+.modal-content div {
+    position: relative;
+}
+
+.modal-content div input {
+    position: absolute;
+    left: 40%;
+    width: 40%;
+    margin: 1% 0%;
+}
+
+.modal-content div select {
+    position: absolute;
+    left: 40%;
+    width: 40%;
+    margin: 1% 0%;
+}
+
+.close {
+    color: #fff;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 2%;
+    right: 4%;
+}
+
+.close:hover, .close:focus {
+    color: rgb(200, 200, 200);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#loginFormDiv {
+    position: relative;
+    margin: 10% auto;
+}
+
+#loginForm {
+    position: relative;
+    background: #FFFFFF;
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 45px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+#loginForm input {
+    background: rgb(200, 200, 200);
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 18px;
+}
+
+#loginForm button {
+    font-family: myFont, Arial, sans-serif;
+    text-transform: uppercase;
+    background: #6D1A16;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 18px;
+}
+
+#loginForm button:hover, #loginForm button:active, #loginForm button:focus {
+    background: #4F100B;
+    cursor: pointer;
+}
+
+
+/*----end footer content----*/
