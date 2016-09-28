@@ -11,7 +11,6 @@ function init() {
 
     var loginFormDiv = document.getElementById('loginFormDiv');
     var tabsBar = document.getElementById('tabsBar');
-    var loginValueRef = database.ref('loginValue').once('value', function(snapshot) {});
     var currentUserRef = firebase.auth().currentUser;
 
     firebase.auth().onAuthStateChanged(function(user) {
@@ -48,6 +47,9 @@ function init() {
                     function(error) {
                         var errorMessage = error.message;
                         loginText.innerHTML = errorMessage;
+                        setTimeout(function() {
+                            loginText.innerHTML = "";
+                        }, 5000);
                     });
             }
         }
@@ -91,7 +93,7 @@ function tabButtonClick(currTab) {
             var otherTab = document.getElementById(tabs[i]);
             otherTab.style.display = "none";
 
-            tabClone = otherTab.cloneNode(true);
+            var tabClone = otherTab.cloneNode(true);
             otherTab.parentNode.replaceChild(tabClone, otherTab);
         }
     }
@@ -115,6 +117,7 @@ function homeButtonClick() {
     });
 
     //setting user profile
+    var homeProfile = document.getElementById('homeProfile');
     var homeBlockHeading = document.getElementById('homeBlockHeading');
     var homeBlockContent = document.getElementById('homeBlockContent');
     database.ref('Users').once('value', function(snapshot) {
@@ -140,8 +143,62 @@ function homeButtonClick() {
         var str = currentUserPosition + "<br/>" + currentUserId;
         homeBlockHeading.innerHTML = currentUser.name;
         homeBlockContent.innerHTML = str;
+        homeProfile.style.display = "block";
     });
 
+    var changePasswordModal = document.getElementById('changePasswordModal');
+    var changePasswordModalContent = changePasswordModal.innerHTML;
+
+    var changePasswordButton = document.getElementById('changePasswordButton');
+    changePasswordButton.onclick = function() {
+
+        var currentUser = firebase.auth().currentUser;
+
+        var changePasswordModalClose = document.getElementById('changePasswordModalClose');
+        // When the user clicks on the button, open the modal
+        changePasswordModal.style.display = "block";
+
+        var validateChangePasswordButton = document.getElementById('validateChangePasswordButton');
+        validateChangePasswordButton.onclick = function(eventObj) {
+
+            var changePasswordText = document.getElementById('changePasswordText');
+            var newPassword = document.getElementById('newPassword');
+            var newPasswordFieldText = document.getElementById('newPasswordFieldText');
+
+            currentUser.updatePassword(newPassword.value).then(function() {
+                changePasswordText.innerHTML = "Update Successful!";
+                changePasswordText.style.display = "inline-block";
+                validateChangePasswordButton.style.display = "none";
+                newPassword.style.display = "none";
+                newPasswordFieldText.style.display = "none";
+            }, function(error) {
+                changePasswordText.innerHTML = "Couldn't Update, Login Again!"
+                changePasswordText.style.display = "inline-block";
+                validateChangePasswordButton.style.display = "none";
+                newPassword.style.display = "none";
+                newPasswordFieldText.style.display = "none";
+            });
+
+            setTimeout(function() {
+                changePasswordModal.style.display = "none";
+                changePasswordModal.innerHTML = changePasswordModalContent;
+            }, 4000);
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        changePasswordModalClose.onclick = function() {
+                changePasswordModal.style.display = "none";
+                changePasswordModal.innerHTML = changePasswordModalContent;
+            }
+            // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == changePasswordModal) {
+                changePasswordModal.style.display = "none";
+                changePasswordModal.innerHTML = changePasswordModalContent;
+            }
+        }
+
+    }
 
 }
 
@@ -238,97 +295,142 @@ function inventoryButtonClick() {
 
     tabButtonClick('inventoryDiv');
 
-    //add item modal comes here
-    var addItemModal = document.getElementById('addItemModal');
-    var addItemButton = document.getElementById("addItemButton");
+    //issue item modal comes here
+    var issueItemModal = document.getElementById('issueItemModal');
+
+    var issueItemModalContent = issueItemModal.innerHTML;
+    var issueItemButton = document.getElementById("issueItemButton");
     // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[1];
-    // When the user clicks on the button, open the modal
-    addItemButton.onclick = function() {
 
-            var eventSelect = document.getElementById('eventSelect');
+    issueItemButton.onclick = function() {
+
+
+        var issueItemModalClose = document.getElementById('issueItemModalClose');
+        // When the user clicks on the button, open the modal
+        var eventSelect = document.getElementById('eventSelect');
+        var eventListRef = database.ref('Event');
+        eventListRef.once("value").then(function(snapshot) {
+            var eventList = snapshot.val();
             var str = '';
+            for (var key in eventList) {
+                str += '<option id="' + key + 'option">' + eventList[key].name + '</option>';
+            }
+            eventSelect.innerHTML = str;
+        });
 
-            var eventListRef = database.ref('Event');
-            eventListRef.once("value").then(function(snapshot) {
-                var eventList = snapshot.val();
-                for (var key in eventList) {
-                    str += '<option id="' + key + 'option">' + eventList[key].name + '</option>';
-                }
-                eventSelect.innerHTML = str;
-            });
-            addItemModal.style.display = "block";
-            var validateAddItemButton = document.getElementById('validateAddItemButton');
-            validateAddItemButton.onclick = function(eventObj) {
+        issueItemModal.style.display = "block";
+        var issueItemModalContentBefore = document.getElementById('issueItemModalContentBefore');
 
-                var currentdate = new Date();
-                var datetime = currentdate.getFullYear() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getDate() + " " +
-                    currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
-                var selOptionId = eventSelect.options[eventSelect.selectedIndex].id;
-                var eventKey = selOptionId.substring(0, selOptionId.length - 6);
+        var issueMoreItemsButton = document.getElementById('issueMoreItemsButton');
+        issueMoreItemsButton.onclick = function() {
+            var newInputField = document.createElement('div');
+            newInputField.innerHTML = '<p style="display:inline-block"></p><input type="number" class="issueItemId"></input>';
+            issueItemModalContentBefore.appendChild(newInputField);
+        }
+
+        var validateIssueItemButton = document.getElementById('validateIssueItemButton');
+        validateIssueItemButton.onclick = function(eventObj) {
+
+            var currentdate = new Date();
+            var datetime = currentdate.getFullYear() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getDate() + " " +
+                currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+            var selOptionId = eventSelect.options[eventSelect.selectedIndex].id;
+            var eventKey = selOptionId.substring(0, selOptionId.length - 6);
+
+            var issueItemId = document.getElementsByClassName('issueItemId');
+
+            for (var i = 0; i < issueItemId.length; i++) {
                 var itemEntry = {
                     event: eventKey,
                     id: currentUserId,
-                    item: document.getElementById('addItemId').value,
+                    item: issueItemId[i].value,
                     status: "0",
                     time: datetime
                 };
                 database.ref('Inventory').push(itemEntry);
-                addItemModal.style.display = "none";
+            }
+            issueItemModal.style.display = "none";
+            issueItemModal.innerHTML = issueItemModalContent;
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        issueItemModalClose.onclick = function() {
+                issueItemModal.style.display = "none";
+                issueItemModal.innerHTML = issueItemModalContent;
+            }
+            // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == issueItemModal) {
+                issueItemModal.style.display = "none";
+                issueItemModal.innerHTML = issueItemModalContent;
             }
         }
-        // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-            addItemModal.style.display = "none";
-        }
-        // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == addItemModal) {
-            addItemModal.style.display = "none";
-        }
+
     }
 
     //return item modal comes here
     var returnItemModal = document.getElementById('returnItemModal');
+    var returnItemModalContent = returnItemModal.innerHTML;
     var returnItemButton = document.getElementById("returnItemButton");
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[2];
+
     // When the user clicks on the button, open the modal
     returnItemButton.onclick = function() {
 
-            returnItemModal.style.display = "block";
-            var validateReturnItemButton = document.getElementById('validateReturnItemButton');
-            validateReturnItemButton.onclick = function(eventObj) {
-                var returnItemId = document.getElementById('returnItemId').value;
+        // Get the <span> element that closes the modal
+        var returnItemModalClose = document.getElementById('returnItemModalClose')
+
+        returnItemModal.style.display = "block";
+
+        var returnItemModalContentBefore = document.getElementById('returnItemModalContentBefore');
+
+        var returnMoreItemsButton = document.getElementById('returnMoreItemsButton');
+        returnMoreItemsButton.onclick = function() {
+            var newInputField = document.createElement('div');
+            newInputField.innerHTML = '<p style="display:inline-block"></p><input type="number" class="returnItemId"></input>';
+            returnItemModalContentBefore.appendChild(newInputField);
+        }
+
+        var validateReturnItemButton = document.getElementById('validateReturnItemButton');
+        validateReturnItemButton.onclick = function(eventObj) {
+
                 var inventoryListRef = database.ref('Inventory');
-                inventoryListRef.once("value").then(function(snapshot) {
+                inventoryListRef.once("value", function(snapshot) {
+
                     var inventoryList = snapshot.val();
-                    for (var key in inventoryList) {
-                        if (inventoryList[key].item == returnItemId) {
-                            var currentdate = new Date();
-                            var datetime = currentdate.getFullYear() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getDate() + " " +
-                                currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
-                            var itemEntry = inventoryList[key];
-                            itemEntry.status = datetime;
-                            database.ref('Inventory/' + key).update(itemEntry);
-                            break;
+                    var returnItemId = document.getElementsByClassName('returnItemId');
+                    for (var i = 0; i < returnItemId.length; i++) {
+                        for (var key in inventoryList) {
+                            if (inventoryList[key].item == returnItemId[i].value) {
+                                var currentdate = new Date();
+                                var datetime = currentdate.getFullYear() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getDate() + " " +
+                                    currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
+                                var itemEntry = inventoryList[key];
+                                itemEntry.status = datetime;
+                                database.ref('Inventory/' + key).update(itemEntry);
+                                break;
+                            }
                         }
                     }
                 });
 
                 returnItemModal.style.display = "none";
+                returnItemModal.innerHTML = returnItemModalContent;
+            }
+            // When the user clicks on <span> (x), close the modal
+        returnItemModalClose.onclick = function() {
+                returnItemModal.style.display = "none";
+                returnItemModal.innerHTML = returnItemModalContent;
+            }
+            // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == returnItemModal) {
+                returnItemModal.style.display = "none";
+                returnItemModal.innerHTML = returnItemModalContent;
             }
         }
-        // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-            returnItemModal.style.display = "none";
-        }
-        // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == returnItemModal) {
-            returnItemModal.style.display = "none";
-        }
+
     }
+
 
     database.ref('Inventory').on('value', function(snapshot) {
         var inventoryList = snapshot.val();
@@ -431,7 +533,7 @@ function inventoryButtonClick() {
                         }
                     }
                     if (noItemsInEvent) {
-                        str = "<p>No Items In Event</p>";
+                        str = '<thead><th colspan="5"> NO ITEMS IN EVENT </th></thead>';
                     }
                     inventoryListTable.innerHTML = str;
                     inventoryListTable.style.display = "table";
