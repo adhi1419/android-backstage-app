@@ -1,0 +1,4 @@
+1. addEventModal window.onclick shouldn't close modal x
+2. login body is small x
+3. console clears itself x
+4. CSS positioning problems x

@@ -58,12 +58,33 @@
             <div id="homeDiv" style="display:none;">
 
                 <div class="topHomeStuff">
-                    <div id="homeProfile">
+                    <div id="homeProfile" style="display:none">
                         <p id="homeBlockHeading"></p>
                         <br>
                         <p id="homeBlockContent"></p>
+                        <button type="button" id="changePasswordButton" class="buttonB">Change Password</button>
                     </div>
                 </div>
+
+                <!-- The Modal -->
+                <div id="changePasswordModal" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                          <span class="close" id="changePasswordModalClose">x</span>
+                        <div>
+                            <p style="display:inline-block" id="newPasswordFieldText">New Password : </p><input type="text" id="newPassword"></input>
+                        </div>
+                        <div style="text-align:center">
+                            <button id="validateChangePasswordButton" class="buttonC">Change</button>
+                        </div>
+                        <div>
+                            <p style="display:none;text-align:center;" id="changePasswordText"></p>
+                        </div>
+                    </div>
+                </div>
+
+
+
                 <!--start footer from here-->
 
 
@@ -99,6 +120,7 @@
                     </div>
 
                 </div>
+
                 <hr>
                 <table id="eventListTable">
                 </table>
@@ -107,22 +129,30 @@
             <div id="inventoryDiv" style="display:none">
 
                 <div id="inventoryButtonsDiv" style="text-align:center">
-                    <button type="button" id="addItemButton" class="buttonB">Add Item</button>
+                    <button type="button" id="issueItemButton" class="buttonB">Issue Item</button>
                     <button type="button" id="returnItemButton" class="buttonB">Return Item</button>
                     <hr>
                 </div>
 
                 <!-- The Modal -->
-                <div id="addItemModal" class="modal">
+                <div id="issueItemModal" class="modal">
                     <!-- Modal content -->
                     <div class="modal-content">
-                        <span class="close">x</span>
+                      <div id="issueItemModalContentBefore">
+                        <span class="close" id="issueItemModalClose">x</span>
                         <div>
-                            <p style="display:inline-block">Event : </p><select id="eventSelect"></select></div>
-                        <div>
-                            <p style="display:inline-block">Item ID : </p><input type="number" id="addItemId"></input>
+                            <p style="display:inline-block">Event : </p><select id="eventSelect"></select>
                         </div>
-                        <div style="text-align:center"><button id="validateAddItemButton" class="buttonC">Add</button></div>
+                        <div>
+                            <p style="display:inline-block">Item ID : </p><input type="number" class="issueItemId"></input>
+                        </div>
+                      </div>
+                        <div style="text-align:center">
+                            <button id="issueMoreItemsButton" class="buttonA">+</button>
+                        </div>
+                        <div style="text-align:center">
+                            <button id="validateIssueItemButton" class="buttonC">Issue</button>
+                        </div>
                     </div>
                 </div>
 
@@ -130,9 +160,14 @@
                 <div id="returnItemModal" class="modal">
                     <!-- Modal content -->
                     <div class="modal-content">
-                        <span class="close">x</span>
+                      <div id="returnItemModalContentBefore">
+                        <span class="close" id="returnItemModalClose">x</span>
                         <div>
-                            <p style="display:inline-block">Item ID : </p><input type="number" id="returnItemId"></input>
+                            <p style="display:inline-block">Item ID : </p><input type="number" class="returnItemId"></input>
+                        </div>
+                      </div>
+                        <div style="text-align:center">
+                            <button id="returnMoreItemsButton" class="buttonA">+</button>
                         </div>
                         <div style="text-align:center"><button id="validateReturnItemButton" class="buttonC">Return</button></div>
                     </div>
@@ -159,17 +194,18 @@
 
         </div>
 
-        <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.3.2/firebase.js"></script>
         <script>
             // Initialize Firebase
             var config = {
-                apiKey: "AIzaSyBO7WcO9KeUPND-Umk3gQqHJipKJoUBEvo",
-                authDomain: "backstage-99042.firebaseapp.com",
-                databaseURL: "https://backstage-99042.firebaseio.com",
-                storageBucket: "backstage-99042.appspot.com",
+                apiKey: "AIzaSyCC7uALY5n-Gove3KFzrAv7cfpfMEbguPA",
+                authDomain: "backstage-23471.firebaseapp.com",
+                databaseURL: "https://backstage-23471.firebaseio.com",
+                storageBucket: "backstage-23471.appspot.com",
             };
             firebase.initializeApp(config);
         </script>
+
         <script src="scripts/main.js" charset="utf-8"></script>
     </div>
 </body>
