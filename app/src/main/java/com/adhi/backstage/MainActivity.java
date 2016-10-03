@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -53,10 +54,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
         cLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         setSupportActionBar(toolbar);
-        if (getIntent().getIntExtra("fragment", R.id.home) == R.id.home)
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        if (getIntent().getIntExtra("fragment", R.id.home) == R.id.home) {
+            try {
+                FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            } catch (DatabaseException de) {
+                de.printStackTrace();
+            }
+        }
         initNavigationDrawer();
         displayFragment(getIntent().getIntExtra("fragment", R.id.home));
         //showSnackBar();

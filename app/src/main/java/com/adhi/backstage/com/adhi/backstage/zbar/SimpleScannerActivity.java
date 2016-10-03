@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -31,6 +33,8 @@ public class SimpleScannerActivity extends BaseScannerActivity implements ZBarSc
     private DatabaseReference mDatabase;
     private FirebaseAuth auth;
     private String sEvent = null;
+    private Button bAdd;
+    private EditText etAdd;
 
     @Override
     public void onCreate(Bundle state) {
@@ -41,10 +45,25 @@ public class SimpleScannerActivity extends BaseScannerActivity implements ZBarSc
         mScannerView = new ZBarScannerView(this);
         contentFrame.addView(mScannerView);
 
+        bAdd = (Button) findViewById(R.id.btn_zbar_add);
+        etAdd = (EditText) findViewById(R.id.et_zbar_add);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Inventory");
         auth = FirebaseAuth.getInstance();
         sEvent = getIntent().getStringExtra("event_key");
+
+        bAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String data = etAdd.getText().toString();
+                if (!data.equals("")) {
+                    onItemScanned(data);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Enter a valid Item Number", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
 
     @Override
     public void onResume() {
@@ -61,17 +80,19 @@ public class SimpleScannerActivity extends BaseScannerActivity implements ZBarSc
 
     @Override
     public void handleResult(Result rawResult) {
+        onItemScanned(rawResult.getContents());
+    }
 
+    private void onItemScanned(String itemName) {
         String key = mDatabase.push().getKey();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         sdf.setTimeZone(TimeZone.getDefault());
         String currentDateAndTime = sdf.format(new Date());
 
-
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SimpleScannerActivity.this);
 
         if (!(sEvent.equals(null) || sEvent.equals(""))) {
-            InventoryItem iItem = new InventoryItem(auth.getCurrentUser().getEmail().split("\\@")[0], rawResult.getContents()
+            InventoryItem iItem = new InventoryItem(auth.getCurrentUser().getEmail().split("\\@")[0], itemName
                     , sEvent, currentDateAndTime, "0");
             Map<String, Object> postValues = iItem.toMap();
             Map<String, Object> childUpdates = new HashMap<>();

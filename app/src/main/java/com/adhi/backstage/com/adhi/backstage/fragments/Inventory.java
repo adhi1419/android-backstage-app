@@ -81,31 +81,32 @@ public class Inventory extends Fragment {
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Inventory");
 
+        ValueEventListener getEvents = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                eItemList.clear();
+                eventList.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    eventList.add(ds.child("name").getValue().toString());
+                    EventsItem eItem = new EventsItem(ds.child("name").getValue().toString(), ds.child("start").getValue().toString(),
+                            ds.child("end").getValue().toString(), ds.child("place").getValue().toString());
+                    eItem.key = ds.getKey();
+                    eItemList.add(eItem);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        FirebaseDatabase.getInstance().getReference().child("Event").addValueEventListener(getEvents);
+
+
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab_add_inv);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabase = FirebaseDatabase.getInstance().getReference();
-                ValueEventListener getEvents = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        eItemList.clear();
-                        eventList.clear();
-                        for (DataSnapshot ds : dataSnapshot.child("Event").getChildren()) {
-                            eventList.add(ds.child("name").getValue().toString());
-                            EventsItem eItem = new EventsItem(ds.child("name").getValue().toString(), ds.child("start").getValue().toString(),
-                                    ds.child("end").getValue().toString(), ds.child("place").getValue().toString());
-                            eItem.key = ds.getKey();
-                            eItemList.add(eItem);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                };
-                mDatabase.addValueEventListener(getEvents);
 
                 final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
                 alert.setTitle("Select Event");

@@ -7,23 +7,23 @@
 
     <TextView
         android:id="@+id/label"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="100dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textSize="45dp"
         android:text="@string/title_about"
-        android:textStyle="bold"/>
+        android:textSize="45dp"
+        android:textStyle="bold" />
 
     <TextView
-        android:layout_below="@id/label"
-        android:layout_centerInParent="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
+        android:layout_below="@id/label"
+        android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
-        android:text="About Screen will appear here" />
+        android:text="About Screen will appear here"
+        android:textSize="12dp" />
 
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.adhi.backstage;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,7 @@ public class LoginScreen extends AppCompatActivity {
 
         setContentView(R.layout.activity_login_screen);
         toolbar = (Toolbar) findViewById(R.id.toolbar_login);
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
         inputEmail = (EditText) findViewById(R.id.input_email);
