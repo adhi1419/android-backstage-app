@@ -245,6 +245,7 @@ hr {
 
 #header {
     padding: 0px 0px 20px;
+    position: relative;
 }
 
 #header .top_banner {
@@ -264,7 +265,7 @@ hr {
 
 #header #logoDiv {
     position: absolute;
-    right: 2%;
+    right: 0%;
     top: 3%;
     width: 7%;
 }
@@ -406,7 +407,7 @@ a.btn:hover {
     font-family: myFont;
 }
 
-.buttonA:hover, .buttonA:focus, .buttonA:active{
+.buttonA:hover, .buttonA:focus{
       cursor: pointer;
       color: rgb(200, 200, 200);
 }
@@ -423,6 +424,11 @@ a.btn:hover {
     border-radius: 10%;
 }
 
+.buttonB:focus {
+  cursor: pointer;
+  color: rgb(62, 0, 0);
+}
+
 .buttonC {
     border: 1px solid #ffffff;
     border-radius: 10%;
@@ -433,7 +439,7 @@ a.btn:hover {
     font-family: myFont;
 }
 
-button:hover, button:active, button:focus {
+button:hover, button:focus {
     cursor: pointer;
     color: rgb(200, 200, 200);
 }
@@ -496,6 +502,14 @@ button:hover, button:active, button:focus {
     cursor: pointer;
 }
 
+#issueItemModalContentBefore{
+  position: static;
+}
+
+#returnItemModalContentBefore{
+  position: static;
+}
+
 #loginFormDiv {
     position: relative;
     margin: 10% auto;
@@ -536,5 +550,18 @@ button:hover, button:active, button:focus {
     cursor: pointer;
 }
 
+#loginText{
+  color: rgb(200,200,200);
+  margin-top: 1%;
+}
+
+#pageNosDiv{
+  text-align: center;
+  width: 100%;
+}
+
+#pageNosDiv button{
+  margin: 2% 1% 0%;
+}
 
 /*----end footer content----*/
