@@ -12,6 +12,7 @@ import com.adhi.backstage.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -34,6 +35,7 @@ public class InventoryItemCardArrayAdapter extends RecyclerView.Adapter<Inventor
         TextView line3;
         TextView line4;
         TextView line5;
+        TextView line6;
         Button btn1;
 
         public MyViewHolder(View view) {
@@ -43,6 +45,7 @@ public class InventoryItemCardArrayAdapter extends RecyclerView.Adapter<Inventor
             line3 = (TextView) view.findViewById(R.id.list_inventory_time);
             line4 = (TextView) view.findViewById(R.id.list_inventory_event);
             line5 = (TextView) view.findViewById(R.id.list_inventory_return);
+            line6 = (TextView) view.findViewById(R.id.list_inventory_details);
             btn1 = (Button) view.findViewById(R.id.list_inventory_return_btn);
         }
     }
@@ -65,24 +68,31 @@ public class InventoryItemCardArrayAdapter extends RecyclerView.Adapter<Inventor
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        holder.line1.setText(card.item);
-        holder.line3.setText("Issued On: " + card.time);
         mDatabase.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        String sItemType = "Unknown", sItemDesc = "No Description";
+                        try {
+                            sItemType = dataSnapshot.child("Items").child(card.item).child("type").getValue().toString();
+                            sItemDesc = dataSnapshot.child("Items").child(card.item).child("details").getValue().toString();
+                        } catch (NullPointerException npEx) {
+                            npEx.printStackTrace();
+                        }
+                        holder.line1.setText("[" + sItemType + "] " + card.item);
                         holder.line2.setText("Issued To: " + dataSnapshot.child("Users").child(card.id)
                                 .child("name").getValue().toString());
+                        holder.line3.setText("Issued On: " + card.time);
                         holder.line4.setText("Event: " + dataSnapshot.child("Event").child(card.event)
                                 .child("name").getValue().toString() + ", " + dataSnapshot.child("Event").child(card.event)
                                 .child("place").getValue().toString());
+                        holder.line6.setText("Item Description: " + sItemType + ", " + sItemDesc);
                         if (!card.status.equals("0")) {
                             holder.btn1.setVisibility(View.GONE);
                             holder.line1.setTextColor(Color.GREEN);
                             holder.line5.setText("Returned On: " + card.status);
                         } else {
-                            if (!FirebaseAuth.getInstance().getCurrentUser().getEmail().split("\\@")[0].equals(card.id))
-                                holder.btn1.setVisibility(View.GONE);
+                            holder.btn1.setVisibility(View.VISIBLE);
                             holder.line1.setTextColor(Color.RED);
                             holder.line5.setText("Status: Not Returned\nExpected: " + dataSnapshot.child("Event").child(card.event)
                                     .child("end").getValue().toString());
@@ -106,7 +116,6 @@ public class InventoryItemCardArrayAdapter extends RecyclerView.Adapter<Inventor
                 InventoryItem iItem = new InventoryItem(card.id, card.item, card.event, card.time,
                         currentDateAndTime);
                 Map<String, Object> postValues = iItem.toMap();
-
                 Map<String, Object> childUpdates = new HashMap<>();
                 childUpdates.put(card.key, postValues);
                 miDatabase.updateChildren(childUpdates);
@@ -121,10 +130,12 @@ public class InventoryItemCardArrayAdapter extends RecyclerView.Adapter<Inventor
                     holder.line3.setVisibility(View.VISIBLE);
                     holder.line4.setVisibility(View.VISIBLE);
                     holder.line5.setVisibility(View.VISIBLE);
+                    holder.line6.setVisibility(View.VISIBLE);
                 } else {
                     holder.line3.setVisibility(View.GONE);
                     holder.line4.setVisibility(View.GONE);
                     holder.line5.setVisibility(View.GONE);
+                    holder.line6.setVisibility(View.GONE);
                 }
             }
         });

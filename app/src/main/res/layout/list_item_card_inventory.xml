@@ -66,13 +66,22 @@
                 android:textStyle="normal|italic"
                 android:visibility="gone" />
 
+            <TextView
+                android:id="@+id/list_inventory_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Details"
+                android:textColor="@color/common_google_signin_btn_text_light_default"
+                android:textStyle="normal|italic"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/list_inventory_return_btn"
                 style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Return Item"
                 android:padding="-8dp"
+                android:text="Return Item"
                 android:textColor="@color/accent_material_light" />
 
         </LinearLayout>

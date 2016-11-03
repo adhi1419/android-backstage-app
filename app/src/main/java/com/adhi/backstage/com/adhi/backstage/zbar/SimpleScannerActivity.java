@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextPaint;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,8 +16,12 @@ import com.adhi.backstage.MainActivity;
 import com.adhi.backstage.R;
 import com.adhi.backstage.com.adhi.backstage.cardlist.InventoryItem;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -83,46 +88,171 @@ public class SimpleScannerActivity extends BaseScannerActivity implements ZBarSc
         onItemScanned(rawResult.getContents());
     }
 
-    private void onItemScanned(String itemName) {
-        String key = mDatabase.push().getKey();
+    private void onItemScanned(final String itemName) {
+        final String key = mDatabase.push().getKey();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         sdf.setTimeZone(TimeZone.getDefault());
-        String currentDateAndTime = sdf.format(new Date());
+        final String currentDateAndTime = sdf.format(new Date());
 
+        FirebaseDatabase.getInstance().getReference().child("Items").child(itemName)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot das) {
+                        if (das.getValue() != null) {
+                            if (das.child("history").getValue() != null) {
+                                final Query mLastItemIssue = FirebaseDatabase.getInstance().getReference().child("Items")
+                                        .child(itemName).child("history").limitToLast(1);
+                                ValueEventListener checkItemListener = new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(final DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                            final String sKeyLastEventIssued = dataSnapshot1.getKey().toString();
+                                            FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot ds) {
+                                                    if (!ds.child("Inventory").child(sKeyLastEventIssued)
+                                                            .child("status").getValue().toString().equals("0")) {
+                                                        InventoryItem iItem = new InventoryItem(auth.getCurrentUser().getEmail().split("\\@")[0], itemName
+                                                                , sEvent, currentDateAndTime, "0");
+                                                        Map<String, Object> postValues = iItem.toMap();
+                                                        Map<String, Object> childUpdates = new HashMap<>();
+                                                        childUpdates.put(key, postValues);
+                                                        mDatabase.updateChildren(childUpdates);
+
+                                                        Map<String, Object> mItemHistory = new HashMap<>();
+                                                        mItemHistory.put("event", sEvent);
+                                                        Map<String, Object> itemHistory = new HashMap<>();
+                                                        itemHistory.put(key, mItemHistory);
+                                                        FirebaseDatabase.getInstance().getReference()
+                                                                .child("Items").child(itemName).child("history")
+                                                                .updateChildren(itemHistory);
+
+                                                        Map<String, Object> mEventHistory = new HashMap<>();
+                                                        mItemHistory.put("item", itemName);
+                                                        Map<String, Object> eventHistory = new HashMap<>();
+                                                        eventHistory.put(key, mEventHistory);
+                                                        FirebaseDatabase.getInstance().getReference()
+                                                                .child("Event").child(sEvent).child("items")
+                                                                .updateChildren(eventHistory);
+
+                                                        mAddMoreItemAlertDialog("Add New Item", "Do you want to add more items?");
+                                                    } else {
+                                                        mAddMoreItemAlertDialog("This item has not been returned yet", "Do you want to add more items?");
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+                                                }
+
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                };
+                                mLastItemIssue.addListenerForSingleValueEvent(checkItemListener);
+                            } else {
+                                InventoryItem iItem = new InventoryItem(auth.getCurrentUser().getEmail().split("\\@")[0], itemName
+                                        , sEvent, currentDateAndTime, "0");
+                                Map<String, Object> postValues = iItem.toMap();
+                                Map<String, Object> childUpdates = new HashMap<>();
+                                childUpdates.put(key, postValues);
+                                mDatabase.updateChildren(childUpdates);
+
+                                Map<String, Object> mItemHistory = new HashMap<>();
+                                mItemHistory.put("event", sEvent);
+                                Map<String, Object> itemHistory = new HashMap<>();
+                                itemHistory.put(key, mItemHistory);
+                                FirebaseDatabase.getInstance().getReference()
+                                        .child("Items").child(itemName).child("history")
+                                        .updateChildren(itemHistory);
+
+                                Map<String, Object> mEventHistory = new HashMap<>();
+                                mEventHistory.put("item", itemName);
+                                Map<String, Object> eventHistory = new HashMap<>();
+                                eventHistory.put(key, mEventHistory);
+                                FirebaseDatabase.getInstance().getReference()
+                                        .child("Event").child(sEvent).child("items")
+                                        .updateChildren(eventHistory);
+
+                                mAddMoreItemAlertDialog("Add New Item", "Do you want to add more items?");
+                            }
+
+                        } else {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SimpleScannerActivity.this);
+                            alertDialogBuilder.setTitle("Item not found");
+                            alertDialogBuilder
+                                    .setMessage("Do you still want to issue?")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            InventoryItem iItem = new InventoryItem(auth.getCurrentUser().getEmail().split("\\@")[0], itemName
+                                                    , sEvent, currentDateAndTime, "0");
+                                            Map<String, Object> postValues = iItem.toMap();
+                                            Map<String, Object> childUpdates = new HashMap<>();
+                                            childUpdates.put(key, postValues);
+                                            mDatabase.updateChildren(childUpdates);
+
+                                            Map<String, Object> mEventHistory = new HashMap<>();
+                                            mEventHistory.put("item", itemName);
+                                            Map<String, Object> eventHistory = new HashMap<>();
+                                            eventHistory.put(key, mEventHistory);
+                                            FirebaseDatabase.getInstance().getReference()
+                                                    .child("Event").child(sEvent).child("items")
+                                                    .updateChildren(eventHistory);
+                                            dialog.cancel();
+                                            mAddMoreItemAlertDialog("Add New Item", "Do you want to add more items?");
+                                        }
+                                    })
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                            mAddMoreItemAlertDialog("Add New Item", "Do you want to add more items?");
+                                        }
+                                    });
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+
+                });
+
+    }
+
+
+    private void mAddMoreItemAlertDialog(String title, String msg) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SimpleScannerActivity.this);
-
-        if (!(sEvent.equals(null) || sEvent.equals(""))) {
-            InventoryItem iItem = new InventoryItem(auth.getCurrentUser().getEmail().split("\\@")[0], itemName
-                    , sEvent, currentDateAndTime, "0");
-            Map<String, Object> postValues = iItem.toMap();
-            Map<String, Object> childUpdates = new HashMap<>();
-            childUpdates.put(key, postValues);
-            mDatabase.updateChildren(childUpdates);
-
-            alertDialogBuilder.setTitle("Add New Item");
-            alertDialogBuilder
-                    .setMessage("Do you want to add more items?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mScannerView.resumeCameraPreview(SimpleScannerActivity.this);
-                                }
-                            }, 2000);
-                            dialog.cancel();
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent intent = new Intent(SimpleScannerActivity.this, MainActivity.class);
-                            intent.putExtra("fragment", R.id.inventory);
-                            startActivity(intent);
-                        }
-                    });
-        }
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder
+                .setMessage(msg)
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mScannerView.resumeCameraPreview(SimpleScannerActivity.this);
+                            }
+                        }, 2000);
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(SimpleScannerActivity.this, MainActivity.class);
+                        intent.putExtra("fragment", R.id.inventory);
+                        startActivity(intent);
+                    }
+                });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
