@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Backstage</title>
+    <meta name="description" content="A description of your website">
+    <meta name="keywords" content="keyword1, keyword2, keyword3">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <div id="header">
+
+            <div class="top_banner">
+                <h1>BACKSTAGE</h1>
+                <p>Be a Techie.</p>
+            </div>
+
+            <div class="navigation" style="display:none;" id="tabsBar">
+                <ul>
+                    <li id="homeButton" class="btn">Home</li>
+                    <li><a href="newsnd.html">News and Discussions</a></li>
+                    <li id="eventsButton" class="btn">Events</li>
+                    <li id="membersButton" class="btn">Members</li>
+                    <li id="inventoryButton" class="btn">Inventory</li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="login-page">
+            <div id="loginFormDiv">
+                <form id="loginForm">
+                    <input type="text" placeholder="username" id="loginEmail" />
+                    <input type="password" placeholder="password" id="loginPassword" />
+                    <button id="loginButton" type="button">login</button>
+                    <p id="loginText"></p>
+                </form>
+            </div>
+        </div>
+
+        <div id="homeDiv" style="display:none;">
+
+            <div class="left_side_bar">
+
+                <div class="col_1">
+                    <h1>Main Menu</h1>
+                    <div class="box">
+                        <ul>
+                            <li><a href="#">Menu Item 1</a></li>
+                            <li><a href="#">Menu Item 2</a></li>
+                            <li><a href="#">Menu Item 3</a></li>
+                            <li><a href="#">Menu Item 4</a></li>
+                            <li><a href="#">Menu Item 5</a></li>
+                            <li><a href="#">Menu Item 6</a></li>
+                            <li><a href="#">Menu Item 7</a></li>
+                            <li><a href="#">Menu Item 8</a></li>
+                            <li><a href="#">Menu Item 9</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col_1">
+                    <h1>User Profile</h1>
+                    <div class="box">
+                        <p id="homeBlockHeading"></p>
+                        <br>
+                        <p id="homeBlockContent"></p>
+                        <button type="button" id="signOutButton" class="btn otherButtons">SIGN OUT</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="right_section">
+                <div class="common_content">
+                    <h2>Gallery</h2>
+                    <hr>
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque
+                        eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.
+                        Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
+                        Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.</p>
+                </div>
+                <div class="top_content">
+                    <div class="column_one">
+                        <h2>Subscription</h2>
+                        <p>Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc,
+                            blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ant</p>
+                        <br>
+                        <p><a href="#" class="btn">Read more</a></p>
+                    </div>
+                    <div class="column_two border_left">
+                        <h2>Other Services</h2>
+                        <p>Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc,
+                            blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ant</p>
+                        <br>
+                        <p><a href="#" class="btn">Read more</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clear"></div>
+
+            <!--start footer from here-->
+            <div id="footer">Copyright &copy; 2014. Design by <a href="http://www.htmltemplates.net/" target="_blank">HTML Templates</a><br>
+
+                <!--DO NOT remove footer link-->
+                <!--Template designed by-->
+                <a href="http://www.htmltemplates.net/"><img src="images/footnote.gif" class="copyright" alt="www.htmltemplates.net"></a>
+            </div>
+
+            <!--/. end footer from here-->
+        </div>
+
+        <div id="eventDiv" style="display:none">
+            <div style="text-align:center" id="addEventButtonDiv">
+                <button id="addEventButton" class="btn otherButtons">Add Event</button>
+                <p id="addEventButtonText"></p>
+            </div>
+
+            <!-- The Modal -->
+            <div id="addEventModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">x</span>
+                    <div>
+                        <p style="display:inline-block">Event Name : </p><input type="text" id="eventName"></input>
+                    </div>
+                    <div>
+                        <p style="display:inline-block">Venue : </p><input type="text" id="eventVenue"></input>
+                    </div>
+                    <div>
+                        <p style="display:inline-block">Start Time : </p><input type="datetime-local" id="eventEntryTime"></input>
+                    </div>
+                    <div>
+                        <p style="display:inline-block">End Time : </p><input type="datetime-local" id="eventExitTime"></input>
+                    </div>
+                    <div style="text-align:center"><button id="validateEventButton" class="btn validateButton">ADD</button></div>
+
+                </div>
+
+            </div>
+            <hr>
+            <table id="eventListTable">
+            </table>
+        </div>
+
+        <div id="inventoryDiv" style="display:none">
+
+            <div id="inventoryButtonsDiv" style="text-align:center">
+                <button type="button" id="addItemButton" class="btn otherButtons">Add Item</button>
+                <button type="button" id="returnItemButton" class="btn otherButtons">Return Item</button>
+                <hr>
+            </div>
+
+            <!-- The Modal -->
+            <div id="addItemModal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">x</span>
+                    <div>
+                        <p style="display:inline-block">Event : </p><select id="eventSelect"></select></div>
+                    <div>
+                        <p style="display:inline-block">Item ID : </p><input type="number" id="addItemId"></input>
+                    </div>
+                    <div style="text-align:center"><button id="validateAddItemButton" class="btn validateButton">ADD</button></div>
+                </div>
+            </div>
+
+            <!-- The Modal -->
+            <div id="returnItemModal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">x</span>
+                    <div>
+                        <p style="display:inline-block">Item ID : </p><input type="number" id="returnItemId"></input>
+                    </div>
+                    <div style="text-align:center"><button id="validateReturnItemButton" class="btn validateButton">RETURN</button></div>
+                </div>
+            </div>
+
+            <div id="inventoryDisplayTypeDiv" style="text-align:center">
+                <button type="button" id="fullInventoryListButton" class="btn otherButtons">Show All Items</button>
+                <button type="button" id="eventInventoryListButton" class="btn otherButtons">Show By Events</button>
+            </div>
+
+            <p id="eventInventoryList">
+            </p>
+
+            <table id="inventoryListTable">
+            </table>
+
+        </div>
+
+        <div id="membersDiv">
+            <table id="membersTable">
+
+            </table>
+        </div>
+
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBO7WcO9KeUPND-Umk3gQqHJipKJoUBEvo",
+            authDomain: "backstage-99042.firebaseapp.com",
+            databaseURL: "https://backstage-99042.firebaseio.com",
+            storageBucket: "backstage-99042.appspot.com",
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script src="scripts/main.js" charset="utf-8"></script>
+
+</body>
+
+</html>
