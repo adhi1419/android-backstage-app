@@ -22,6 +22,7 @@ import com.adhi.backstage.com.adhi.backstage.fragments.About;
 import com.adhi.backstage.com.adhi.backstage.fragments.Events;
 import com.adhi.backstage.com.adhi.backstage.fragments.HomeFragment;
 import com.adhi.backstage.com.adhi.backstage.fragments.Inventory;
+import com.adhi.backstage.com.adhi.backstage.fragments.Items;
 import com.adhi.backstage.com.adhi.backstage.fragments.Members;
 import com.adhi.backstage.com.adhi.backstage.fragments.Profile;
 import com.google.android.gms.appindexing.Action;
@@ -130,6 +131,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.members:
                 fragment = new Members();
                 title = getString(R.string.title_members);
+                break;
+            case R.id.items:
+                fragment = new Items();
+                title = getString(R.string.title_items);
                 break;
             case R.id.inventory:
                 fragment = new Inventory();

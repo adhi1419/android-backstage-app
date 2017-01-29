@@ -33,6 +33,7 @@ dependencies {
     compile 'me.dm7.barcodescanner:zbar:1.8.4'
 
     testCompile 'junit:junit:4.12'
+    compile 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
     compile 'com.google.android.gms:play-services-appindexing:9.2.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
 }

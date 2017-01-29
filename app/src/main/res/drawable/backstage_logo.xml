@@ -1,0 +1,4 @@
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/backstage_logo_image"
+    android:alpha="50">
+</bitmap>

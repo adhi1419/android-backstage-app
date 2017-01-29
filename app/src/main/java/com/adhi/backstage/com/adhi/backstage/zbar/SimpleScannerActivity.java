@@ -8,7 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.text.TextPaint;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -48,9 +48,13 @@ public class SimpleScannerActivity extends BaseScannerActivity implements ZBarSc
     public void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_simple_scanner);
-        checkPermissions();
         setupToolbar();
         ViewGroup contentFrame = (ViewGroup) findViewById(R.id.content_frame);
+
+        ActivityCompat.requestPermissions(SimpleScannerActivity.this,
+                new String[]{Manifest.permission.CAMERA},
+                1);
+
         mScannerView = new ZBarScannerView(this);
         contentFrame.addView(mScannerView);
 
@@ -261,34 +265,18 @@ public class SimpleScannerActivity extends BaseScannerActivity implements ZBarSc
         alertDialog.show();
     }
 
-    private void checkPermissions() {
-        if (ContextCompat.checkSelfPermission(SimpleScannerActivity.this,
-                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(SimpleScannerActivity.this,
-                    Manifest.permission.CAMERA)) {
-            } else {
-
-                ActivityCompat.requestPermissions(SimpleScannerActivity.this,
-                        new String[]{Manifest.permission.CAMERA}, 1
-                );
-            }
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case 1: {
-
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 } else {
-                    Toast.makeText(SimpleScannerActivity.this, "Permission denied to use your camera", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SimpleScannerActivity.this, "Permission denied to Access Camera", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
-
         }
     }
 }

@@ -27,7 +27,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adhi.backstage.R;
 import com.adhi.backstage.com.adhi.backstage.cardlist.EventsItem;
@@ -93,6 +92,8 @@ public class Inventory extends Fragment {
                     eItem.key = ds.getKey();
                     eItemList.add(eItem);
                 }
+                Collections.reverse(eItemList);
+                Collections.reverse(eventList);
             }
 
             @Override

@@ -193,6 +193,7 @@ public class Events extends Fragment {
                             ds.child("end").getValue().toString(), ds.child("place").getValue().toString());
                     eItem.key = ds.getKey();
                     eItemList.add(eItem);
+                    Collections.reverse(eItemList);
                 }
                 mAdapter.notifyDataSetChanged();
             }

@@ -13,6 +13,9 @@
             android:id="@+id/members"
             android:title="@string/title_members" />
         <item
+            android:id="@+id/items"
+            android:title="@string/title_items" />
+        <item
             android:id="@+id/inventory"
             android:title="@string/title_inventory" />
         <item
